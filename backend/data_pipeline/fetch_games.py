@@ -12,7 +12,7 @@ BASE_URL = "https://api.rawg.io/api/games"
 OUTPUT_PATH = "data/raw/games.json"
 MAX_PAGES = 125  # 125 pages × 40 results = ~5,000 games to start
 
-
+# Fetches the data of the page {page} and returns json as a list
 def fetch_page(page: int) -> dict:
     params = {
         "key": API_KEY,
@@ -27,6 +27,7 @@ def fetch_page(page: int) -> dict:
     return response.json()
 
 
+# Fetches data for all pages until {MAX_PAGES} and returns it as a list
 def fetch_all_games() -> list:
     all_games = []
 
@@ -49,6 +50,7 @@ def fetch_all_games() -> list:
     return all_games
 
 
+# Saves the fetched data {games} into a json file {OUTPUT_PATH}
 def save_games(games: list):
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
