@@ -10,7 +10,7 @@ load_dotenv()
 API_KEY = os.getenv("RAWG_API_KEY")
 BASE_URL = "https://api.rawg.io/api/games"
 OUTPUT_PATH = "data/raw/games.json"
-MAX_PAGES = 125  # 125 pages × 40 results = ~5,000 games to start
+MAX_PAGES = 1250  # 1250 pages × 40 results = ~50,000 games
 
 # Fetches the data of the page {page} and returns json as a list
 def fetch_page(page: int) -> dict:
