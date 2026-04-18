@@ -4,6 +4,9 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 from tqdm import tqdm
 import uuid
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 INPUT_PATH = "data/processed/games_enriched.parquet"
 COLLECTION_NAME = "games"
@@ -82,7 +85,10 @@ if __name__ == "__main__":
     print(f"Loading model: {EMBEDDING_MODEL}")
     model = SentenceTransformer(EMBEDDING_MODEL)
 
-    client = QdrantClient(host="localhost", port=6333)
+    client = QdrantClient(
+        url=os.getenv("QDRANT_URL"),
+        api_key=os.getenv("QDRANT_API_KEY"),
+    )
 
     setup_qdrant(client, vector_size=model.get_sentence_embedding_dimension())
     embed_and_upload(df, model, client)

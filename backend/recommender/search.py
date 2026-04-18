@@ -1,13 +1,20 @@
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, Range
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 COLLECTION_NAME = "games"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 # Load once at module level — avoids reloading on every request
 model = SentenceTransformer(EMBEDDING_MODEL)
-client = QdrantClient(host="localhost", port=6333)
+
+client = QdrantClient(
+    url=os.getenv("QDRANT_URL"),
+    api_key=os.getenv("QDRANT_API_KEY"),
+)
 
 
 def build_query_text(query: str, liked_games: list[str]) -> str:
