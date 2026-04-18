@@ -32,11 +32,11 @@ User Input
 
 ## Status
 - [x] Repo setup
-- [ ] Data pipeline (RAWG API)
-- [ ] Content-based filtering
-- [ ] Collaborative filtering
-- [ ] LLM re-ranking layer
-- [ ] Frontend
+- [x] Data pipeline (RAWG API)
+- [x] Content-based filtering
+- [x] Collaborative filtering
+- [x] LLM re-ranking layer
+- [x] Frontend
 - [ ] Deployment
 ```
 The checklist will update as the project progresses and updates
