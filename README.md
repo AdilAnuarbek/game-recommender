@@ -41,3 +41,4 @@ User Input
 ```
 The checklist will update as the project progresses and updates
 ```
+> ⚠️ The backend is hosted on Render's free tier and may take 30 seconds to wake up on first request.

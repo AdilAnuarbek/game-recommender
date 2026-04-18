@@ -1,21 +1,19 @@
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, Range
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 COLLECTION_NAME = "games"
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"  # same model, lighter runtime
 
-# Load once at module level — avoids reloading on every request
-model = SentenceTransformer(EMBEDDING_MODEL)
-
+model = TextEmbedding(model_name=EMBEDDING_MODEL)
 client = QdrantClient(
     url=os.getenv("QDRANT_URL"),
     api_key=os.getenv("QDRANT_API_KEY"),
 )
-
 
 def build_query_text(query: str, liked_games: list[str]) -> str:
     parts = []
@@ -28,7 +26,7 @@ def build_query_text(query: str, liked_games: list[str]) -> str:
 
 def search_games(query: str, liked_games: list[str], top_k: int = 20) -> list[dict]:
     query_text = build_query_text(query, liked_games)
-    vector = model.encode([query_text], normalize_embeddings=True)[0].tolist()
+    vector = list(model.embed([query_text]))[0].tolist()
 
     results = client.query_points(
         collection_name=COLLECTION_NAME,
@@ -38,7 +36,7 @@ def search_games(query: str, liked_games: list[str], top_k: int = 20) -> list[di
             must=[
                 FieldCondition(
                     key="rating",
-                    range=Range(gte=3.8)  # only games rated 3.5 or above
+                    range=Range(gte=3.5)
                 )
             ]
         )
@@ -55,7 +53,7 @@ def search_games(query: str, liked_games: list[str], top_k: int = 20) -> list[di
             "playtime":         p.get("playtime", 0.0),
             "released":         p.get("released", ""),
             "background_image": p.get("background_image", ""),
-            "slug":             p.get("slug", ""),      # add this
+            "slug":             p.get("slug", ""),
             "score":            r.score,
         })
 
