@@ -82,6 +82,7 @@ Return ONLY a JSON array, no extra text:
             "playtime":         base.get("playtime", 0.0),
             "released":         base.get("released", ""),
             "background_image": base.get("background_image", ""),
+            "slug":             base.get("slug", ""),   # add this
             "reason":           pick["reason"],
         })
 

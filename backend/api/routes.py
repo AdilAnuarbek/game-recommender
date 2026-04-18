@@ -21,6 +21,7 @@ class GameResult(BaseModel):
     playtime: float
     released: str
     background_image: str
+    slug: str
     reason: str                       # LLM-generated personalized reason
 
 

@@ -78,7 +78,12 @@ export default function App() {
             )}
             <div className="py-4 pr-4">
               <div className="flex items-center gap-3 mb-1">
-                <h2 className="text-lg font-bold">{game.name}</h2>
+            <a href={`https://rawg.io/games/${game.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg font-bold hover:text-indigo-400 transition-colors">
+              {game.name}
+            </a>
                 <span className="text-yellow-400 text-sm">★ {game.rating?.toFixed(1)}</span>
                 {game.released && (
                   <span className="text-gray-500 text-sm">{game.released.slice(0, 4)}</span>

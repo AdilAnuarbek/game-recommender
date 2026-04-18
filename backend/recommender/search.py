@@ -1,5 +1,6 @@
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
+from qdrant_client.models import Filter, FieldCondition, Range
 
 COLLECTION_NAME = "games"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
@@ -26,6 +27,14 @@ def search_games(query: str, liked_games: list[str], top_k: int = 20) -> list[di
         collection_name=COLLECTION_NAME,
         query=vector,
         limit=top_k,
+        query_filter=Filter(
+            must=[
+                FieldCondition(
+                    key="rating",
+                    range=Range(gte=3.8)  # only games rated 3.5 or above
+                )
+            ]
+        )
     )
 
     candidates = []
@@ -39,6 +48,7 @@ def search_games(query: str, liked_games: list[str], top_k: int = 20) -> list[di
             "playtime":         p.get("playtime", 0.0),
             "released":         p.get("released", ""),
             "background_image": p.get("background_image", ""),
+            "slug":             p.get("slug", ""),      # add this
             "score":            r.score,
         })
 
