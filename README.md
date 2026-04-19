@@ -37,7 +37,7 @@ User Input
 - [x] Collaborative filtering
 - [x] LLM re-ranking layer
 - [x] Frontend
-- [ ] Deployment
+- [x] Deployment
 ```
 The checklist will update as the project progresses and updates
 ```
