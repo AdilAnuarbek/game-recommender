@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 COLLECTION_NAME = "games"
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"  # same model, lighter runtime
+EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 
 model = TextEmbedding(model_name=EMBEDDING_MODEL)
 client = QdrantClient(
