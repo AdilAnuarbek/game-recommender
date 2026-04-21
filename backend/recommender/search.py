@@ -50,11 +50,23 @@ def search_games(query: str, liked_games: list[str], top_k: int = 20) -> list[di
             "genres":           p.get("genres", ""),
             "tags":             p.get("tags", ""),
             "rating":           p.get("rating", 0.0),
+            "ratings_count":    p.get("ratings_count", 0),
             "playtime":         p.get("playtime", 0.0),
             "released":         p.get("released", ""),
             "background_image": p.get("background_image", ""),
             "slug":             p.get("slug", ""),
             "score":            r.score,
         })
+
+    # Blend vector similarity with popularity
+    # Normalize ratings_count to 0-1 using log scale (avoids Minecraft dominating everything)
+    import math
+    max_log = max(math.log1p(c["ratings_count"]) for c in candidates) or 1
+    for c in candidates:
+        popularity = math.log1p(c["ratings_count"]) / max_log
+        c["blended_score"] = 0.7 * c["score"] + 0.3 * popularity
+
+    # Sort by blended score so LLM sees best candidates first
+    candidates.sort(key=lambda x: x["blended_score"], reverse=True)
 
     return candidates

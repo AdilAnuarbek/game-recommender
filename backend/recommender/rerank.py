@@ -14,6 +14,7 @@ def format_candidates(candidates: list[dict]) -> str:
         lines.append(
             f"{i}. {g['name']} | Genres: {g['genres']} | "
             f"Tags: {g['tags']} | Rating: {g['rating']} | "
+            f"Reviews: {g['ratings_count']} | "
             f"Playtime: {g['playtime']}h | Released: {g['released']}"
         )
     return "\n".join(lines)
@@ -39,8 +40,9 @@ Your job is to pick the best {final_k} games that CLOSELY match the user's reque
 Rules:
 - If the user mentions specific mechanics (e.g. guns, building, zombies), the game MUST have them.
 - If the user mentions a perspective (e.g. 3rd person), strongly prefer games with that perspective.
-- Do NOT recommend a game that is missing critical elements, even if it matches partially.
+- Do NOT recommend a game that is missing critical elements from the request, even if it matches partially.
 - Do NOT invent or assume features a game doesn't have to make it fit.
+- Among equally relevant games, strongly prefer games with more reviews — they are more proven and well-known.
 - If fewer than {final_k} games genuinely match, return only the ones that do. Do not pad with weak matches.
 
 Return ONLY a JSON array, no extra text:
